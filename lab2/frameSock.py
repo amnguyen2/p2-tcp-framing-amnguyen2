@@ -20,11 +20,11 @@ class frameSock:
     """
     def send_msg(self, msg):
         last_byte = 0 # index in byte array
-        byte_arr = str(len(msg)).encode + b':' + msg.encode() # out-of-band framing; "5:hello"
+        byte_arr = str(len(msg)).encode() + ':'.encode() + msg.encode() # out-of-band framing; "5:hello"
         new_msg = "" # message to be taken from buffer
 
         while len(byte_arr) != 0:
-            last_byte = self.socket.send(byte_array) # send byte array, looks like [2,:,m,e]
+            last_byte = self.sock.send(byte_arr) # send byte array, looks like [2,:,m,e]
             new_msg += byte_arr[:last_byte].decode() # get bytes from array into a string 'new_msg'
             byte_arr = byte_arr[last_byte:] # next byte
 
@@ -36,8 +36,10 @@ class frameSock:
     and return a complete message.
     """
     def recv_msg(self):
+        print(self.buff)
         if len(self.buff) == 0: #nothing in buffer? try receiving
-            self.buff = self.socket.recv(self.limit).decode() # recv bytes under limit (max)
+            print(len(self.buff))
+            self.buff = self.sock.recv(self.limit).decode() # recv bytes under limit (max)
             msg_start = self.buff.index(':') # message looks like "5:hello"
             msg_len = int(self.buff[:msg_start]) # find msg len from buffer? use [:] array notation
             self.buff = self.buff[msg_start+1:] # buff now contains text, without ":"
@@ -45,7 +47,7 @@ class frameSock:
             msg = ""
             while len(msg) != msg_len:
                 if len(self.buff) == 0: #nothing in buffer? try receiving
-                    self.buff = self.socket.recv(self.limit).decode()
+                    self.buff = self.sock.recv(self.limit).decode()
                 msg += self.buff[0] # receive 1 char at a time from buff
                 self.buff = self.buff[1:] # essentially remove char from buff (already received)
 

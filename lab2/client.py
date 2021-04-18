@@ -16,8 +16,6 @@ switchesVarDefaults = (
     (('-?', '--usage'), "usage", False) # boolean (set if present)
     )
 
-progname = "FTPClient"
-     
 """
 paramMap = params.parseParams(switchesVarDefaults)
 server, usage  = paramMap["server"], paramMap["usage"]
@@ -31,7 +29,12 @@ if sys.argv[0] == "send":
         localFile = sys.argv[1]
         serverHost, remoteFile = re.split(":", sys.argv[2])
         serverPort = 50001
+        print(serverHost)
+        print(remoteFile)
     except:
+        print("Something went wrong.")
+        print(sys.argv[1])
+        print(sys.argv[2])
         sys.exit(1)
 else:
     sys.exit(1)

@@ -8,13 +8,13 @@ Abram Nguyen
 import socket, sys, re, os
 sys.path.append("../lib")       # for params
 import params, frameSock
+import workThread
 
 switchesVarDefaults = (
     (('-l', '--listenPort') ,'listenPort', 50001), # server listens at localhost 50001
     (('-?', '--usage'), "usage", False), # boolean (set if present)
     )
 
-progname = "FTPServer"
 paramMap = params.parseParams(switchesVarDefaults)
 
 listenPort = paramMap['listenPort']
