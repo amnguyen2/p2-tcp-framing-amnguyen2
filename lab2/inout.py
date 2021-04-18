@@ -1,9 +1,19 @@
-from os import read, write
+import os
 
 inputBuff = 0 # list of chars, used to read max 100 bytes from keyboard 
 nextChar = 0 # index of the next char in buff
 
+def myReadFile(fileName):
+    fd = os.open(fileName, os.O_RDONLY)
+    lines = ""
+    ln = myReadLine()
 
+    while len(line) != 0:
+        lines += line
+        ln = myReadLine()
+
+    return lines
+        
 def myReadLine():
     global nextChar, inputBuff
     line = "" # reading line... add chars to line
@@ -25,7 +35,7 @@ def myGetChar():
 
     if nextChar == inputBuff:  # buffer empty
         nextChar = 0; 
-        inputBuff = read(0, 100) # (fd 0 is keyboard, num bytes)
+        inputBuff = os.read(0, 100) # (fd 0 is keyboard, num bytes)
 
         if inputBuff == None: # end of file
             return "EOF"
@@ -40,4 +50,4 @@ def myGetChar():
 
     
 def writeLine(line):
-    write(1, line.encode()) # .encode(): chars to bytes
+    os.write(1, line.encode()) # .encode(): chars to bytes
