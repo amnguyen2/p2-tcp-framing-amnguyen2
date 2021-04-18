@@ -6,7 +6,7 @@ Abram Nguyen
 import socket, sys, re, time, os
 sys.path.append("../lib")        # for params
 import params
-from inout import myReadLine, myGetChar # from shell lab 1
+from inout import myReadLine, myReadFile
 import frameSock # framed socket class
 
 
@@ -42,6 +42,7 @@ else:
     
 s = None
 for res in socket.getaddrinfo(serverHost, serverPort, socket.AF_UNSPEC, socket.SOCK_STREAM):
+    # af = address family
     af, socktype, proto, canonname, sa = res
     try:
         print("creating sock: af=%d, type=%d, proto=%d" % (af, socktype, proto))
@@ -70,11 +71,6 @@ if delay != 0:
     time.sleep(delay)
     print("done sleeping")
 
-while 1:
-    data = s.recv(1024). decode()
-    print("Received '%s'" % data)
-    if len(data) == 0:
-        break
 
 print("Zero length read. Closing")
 s.close()
@@ -85,12 +81,18 @@ os.write(1, ("Sending " + sent + '!\n').encode())
 
 sent = framed_sock.send_msg(remoteFile)
 os.write(1, ("Sending " + sent + '!\n').encode())
-
+"""
+while 1:
+    data = s.recv(1024). decode()
+    print("Received '%s'" % data)
+    if len(data) == 0:
+        break
+"""
 response = framed_sock.recv_msg()
 os.write(1, ("Receiving " + response + '\n').encode())
 
 if response == "accept":
-    data = readfile(localFile)
+    data = myReadFile(localFile)
     framed_sock.send_msg(data)
     os.write(1, "Sending " + localFile.encode() + "\n")
 

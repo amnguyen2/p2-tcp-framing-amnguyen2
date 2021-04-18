@@ -17,7 +17,8 @@ class workThread(Thread):
         framed_sock = frameSock.frameSock(self.connectedSock)
 
         request = framed_sock.recv_msg()
-        os.write(1, "Recieving: {}\n".format(request).encode())
+        os.write(1, "Recieving: {} (line20)\n".format(request).encode())
+        file_name = ""
         if request == "send":
             file_name = framed_sock.recv_msg()
             os.write(1, "Receiving {}\n".format(file_name).encode())
@@ -31,10 +32,10 @@ class workThread(Thread):
 
             else:
                 os.write(1, ("Sending: " + framed_sock.send_msg("accept") + "\n").encode())
-                fd = os.open("./server_data/" + filename, os.O_CREAT | os.O_WRONLY)
+                fd = os.open("./server_data/" + file_name, os.O_CREAT | os.O_WRONLY)
                 os.write(fd, (framed_sock.recv_msg()).encode())
                 os.close(fd)
-                os.write(1, ("File {} created.\n").format(fileName).encode())
+                os.write(1, ("File {} created.\n").format(file_name).encode())
         else:
             os.write(1, "Could not complete request".encode())
         self.connectedSock.shutdown(socket.SHUT_WR)

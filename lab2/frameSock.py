@@ -36,19 +36,23 @@ class frameSock:
     and return a complete message.
     """
     def recv_msg(self):
+        print("recv_msg...")
+        print("buffer: ")
         print(self.buff)
+        print("buffer len: ")
+        print(len(self.buff))
+        
         if len(self.buff) == 0: #nothing in buffer? try receiving
-            print(len(self.buff))
             self.buff = self.sock.recv(self.limit).decode() # recv bytes under limit (max)
-            msg_start = self.buff.index(':') # message looks like "5:hello"
-            msg_len = int(self.buff[:msg_start]) # find msg len from buffer? use [:] array notation
-            self.buff = self.buff[msg_start+1:] # buff now contains text, without ":"
+        msg_start = self.buff.index(':') # message looks like "5:hello"
+        msg_len = int(self.buff[:msg_start]) # find msg len from buffer? use [:] array notation
+        self.buff = self.buff[msg_start+1:] # buff now contains text, without ":"
 
-            msg = ""
-            while len(msg) != msg_len:
-                if len(self.buff) == 0: #nothing in buffer? try receiving
-                    self.buff = self.sock.recv(self.limit).decode()
-                msg += self.buff[0] # receive 1 char at a time from buff
-                self.buff = self.buff[1:] # essentially remove char from buff (already received)
+        msg = ""
+        while len(msg) != msg_len:
+            if len(self.buff) == 0: #nothing in buffer? try receiving
+                self.buff = self.sock.recv(self.limit).decode()
+            msg += self.buff[0] # receive 1 char at a time from buff
+            self.buff = self.buff[1:] # essentially remove char from buff (already received)
 
-            return msg
+        return msg
