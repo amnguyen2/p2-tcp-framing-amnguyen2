@@ -92,12 +92,13 @@ response = framed_sock.recv_msg()
 os.write(1, ("Receiving " + response + '\n').encode())
 
 if response == "accept":
+    print("Reading file named " + localFile + '\n')
     data = myReadFile(localFile)
     framed_sock.send_msg(data)
-    os.write(1, "Sending " + localFile.encode() + "\n")
+    os.write(1, "Sending {}\n".format(localFile).encode())
 
     response = framed_sock.recv_msg()
     os.write(1, "Receiving " + response.encode() + "\n")
 else:
-    os.write(1, "File " + localFile.encode() + " exists.")
+    os.write(1, "File {} exists.\n".format(localFile).encode())
 sock.close()

@@ -28,14 +28,14 @@ class workThread(Thread):
 
             if os.path.isfile(path):
                 sent = framed_sock.send_msg("This file already exists.")
-                os.write(1, "Sending " + format(sent).encode() + "\n")
+                os.write(1, "Sending {}\n".format(sent).encode())
 
             else:
                 os.write(1, ("Sending: " + framed_sock.send_msg("accept") + "\n").encode())
                 fd = os.open("./server_data/" + file_name, os.O_CREAT | os.O_WRONLY)
                 os.write(fd, (framed_sock.recv_msg()).encode())
                 os.close(fd)
-                os.write(1, ("File {} created.\n").format(file_name).encode())
+                os.write(1, "File {} created.\n".format(file_name).encode())
         else:
             os.write(1, "Could not complete request".encode())
         self.connectedSock.shutdown(socket.SHUT_WR)
