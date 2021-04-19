@@ -36,14 +36,11 @@ class frameSock:
     and return a complete message.
     """
     def recv_msg(self):
-        print("recv_msg...")
-        print("buffer: ")
-        print(self.buff)
-        print("buffer len: ")
-        print(len(self.buff))
-        
         if len(self.buff) == 0: #nothing in buffer? try receiving
             self.buff = self.sock.recv(self.limit).decode() # recv bytes under limit (max)
+            if len(self.buff) == 0: # receive must have failed
+                return ""
+            
         msg_start = self.buff.index(':') # message looks like "5:hello"
         msg_len = int(self.buff[:msg_start]) # find msg len from buffer? use [:] array notation
         self.buff = self.buff[msg_start+1:] # buff now contains text, without ":"

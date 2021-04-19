@@ -13,17 +13,16 @@ class workThread(Thread):
         self.addr = addr
 
     def run(self):
-        print("worker thread running")
+        print("Worker thread running.")
         framed_sock = frameSock.frameSock(self.connectedSock)
 
         request = framed_sock.recv_msg()
         os.write(1, "Recieving: {} (line20)\n".format(request).encode())
-        file_name = ""
+        
         if request == "send":
             file_name = framed_sock.recv_msg()
             os.write(1, "Receiving {}\n".format(file_name).encode())
 
-            print(type(file_name))
             path = "./server_data/" + file_name
 
             if os.path.isfile(path):
