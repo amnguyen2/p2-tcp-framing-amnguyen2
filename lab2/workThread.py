@@ -44,7 +44,10 @@ class workThread(Thread):
 
             path = "./server_data/" + file_name
 
-            if os.path.isfile(path):
+            if (self.isFileInUse(file_name) == False):
+                framed_sock.send_msg("The file {} is currently in use. Please wait.\n".format(file_name).encode())
+                
+            elif os.path.isfile(path):
                 sent = framed_sock.send_msg("This file already exists.")
                 os.write(1, "Sending {}\n".format(sent).encode())
 

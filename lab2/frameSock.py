@@ -21,6 +21,7 @@ class frameSock:
     def send_msg(self, msg):
         last_byte = 0 # index in byte array
         byte_arr = str(len(msg)).encode() + ':'.encode() + msg.encode() # out-of-band framing; "5:hello"
+        
         new_msg = "" # message to be taken from buffer
 
         while len(byte_arr) != 0:
