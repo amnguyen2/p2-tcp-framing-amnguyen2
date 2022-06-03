@@ -14,3 +14,5 @@ Protocol to frame byte-array messages in a manner that they will arrive intact e
    By default,
    it listens on port 50000 and forwards to localhost:50001.  Use the -?
    option for help.
+   
+* Client communicates with server using requests via framed sockets in order to send the contents of a local file. Project utilizes threading to manage multiple requests at a time between client and server.
